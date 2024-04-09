@@ -1,28 +1,28 @@
-# syntax=docker/dockerfile:1
-
+# Use the base image with Python and nginx/uwsgi
 FROM tiangolo/uwsgi-nginx:python3.6
 
-ARG LISTEN_PORT=5000
-ARG UWSGI_INI=/code/uwsgi/uwsgi.ini
-ARG PYTHONPATH=/code/app
-
-ENV LISTEN_PORT=$LISTEN_PORT
-ENV UWSGI_INI=$UWSGI_INI
-ENV PYTHONPATH=$PYTHONPATH
-ENV NGINX_WORKER_PROCESSES auto
-ENV NGINX_WORKER_CONNECTIONS 65535
-ENV UWSGI_PROCESSES 3
-
+# Copy the application code to the container
 ADD . /code
+
+# Set the working directory
 WORKDIR /code
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt && \
-    chmod +rwx /etc/ssl/openssl.cnf && \
-    sed -i 's/TLSv1.2/TLSv1/g' /etc/ssl/openssl.cnf && \
-    sed -i 's/SECLEVEL=2/SECLEVEL=1/g' /etc/ssl/openssl.cnf
+# Upgrade pip and install requirements
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-EXPOSE $LISTEN_PORT
+# Change permissions and update OpenSSL configuration
+RUN chmod +rwx /etc/ssl/openssl.cnf \
+    && sed -i 's/TLSv1.2/TLSv1/g' /etc/ssl/openssl.cnf \
+    && sed -i 's/SECLEVEL=2/SECLEVEL=1/g' /etc/ssl/openssl.cnf
+
+# Set environment variables
+ENV LISTEN_PORT=5000 \
+    UWSGI_INI=/code/uwsgi/uwsgi.ini \
+    PYTHONPATH=/code/app \
+    NGINX_WORKER_PROCESSES=auto \
+    NGINX_WORKER_CONNECTIONS=65535 \
+    UWSGI_PROCESSES=4
+
+# Expose ports
+EXPOSE 5000
 EXPOSE 1717
-
-CMD ["python", "manage.py"]
