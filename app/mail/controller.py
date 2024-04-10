@@ -39,14 +39,15 @@ from app.mail.model import  (
     selectTagByID,
     updateEmailCriticalType,
 )
-from config import CONFIG as ENV_CONFIG
+from dotenv import load_dotenv
 
-IMAP_HOST = ENV_CONFIG.IMAP_HOST
-IMAP_PORT = ENV_CONFIG.IMAP_PORT
-MAIL_USERNAME = ENV_CONFIG.MAIL_USERNAME
-MAIL_PASSWORD = ENV_CONFIG.MAIL_PASSWORD
-SMTP_HOST = ENV_CONFIG.SMTP_HOST
-SMTP_PORT= ENV_CONFIG.SMTP_PORT
+load_dotenv()
+IMAP_HOST = os.getenv('IMAP_HOST')
+IMAP_PORT = os.getenv('IMAP_PORT')
+MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+SMTP_HOST = os.getenv('SMTP_HOST')
+SMTP_PORT= os.getenv('SMTP_PORT')
 
 class Attachment:
     def __init__(self, part, filename=None, type=None, payload=None, charset=None, content_id=None, description=None, disposition=None, sanitized_filename=None, is_body=None):
