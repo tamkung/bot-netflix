@@ -7,9 +7,6 @@ ADD . /code
 # Set the working directory
 WORKDIR /code
 
-# Copy .env file to the container
-COPY .env /code
-
 # Upgrade pip and install requirements
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
