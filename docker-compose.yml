@@ -3,6 +3,7 @@ services:
     email:
       build:
           context: ./
+          dockerfile: dev.Dockerfile  # เปลี่ยน Dockerfile เป็น dev.Dockerfile
       ports:
           - "5050:5000"
       volumes:
@@ -16,9 +17,3 @@ services:
         - UWSGI_PROCESSES=4
       env_file:
         - ./.env
-      
-
-
- 
-
-
