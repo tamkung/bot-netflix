@@ -39,6 +39,7 @@ from app.mail.model import  (
     selectTagByID,
     updateEmailCriticalType,
 )
+from app.line.message import send_line_notify
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -48,6 +49,7 @@ MAIL_USERNAME = os.getenv('MAIL_USERNAME')
 MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
 SMTP_HOST = os.getenv('SMTP_HOST')
 SMTP_PORT= os.getenv('SMTP_PORT')
+LINE_TOKEN = os.getenv('LINE_TOKEN')
 
 class Attachment:
     def __init__(self, part, filename=None, type=None, payload=None, charset=None, content_id=None, description=None, disposition=None, sanitized_filename=None, is_body=None):
@@ -543,27 +545,32 @@ def netflixForwardEmail(folder):
         print(forward_body)
         
         toAddr = None
+        message = None
         if "ขอโดย TamWT" in forward_body:
             return print("Is Owner Email")
-        elif "ขอโดย Pin" in forward_body:
-            print("Pin")
+        elif "ขอโดย Aun" in forward_body:
+            print("Aun")
             toAddr = "chananchida2912@gmail.com"
+            message = f"ส่งเมล์จาก Netflix ให้ Aun ({toAddr})"
         elif "ขอโดย DOG" in forward_body:
             print("DOG")
             toAddr = "nuttanan355@gmail.com"
+            message = f"ส่งเมล์จาก Netflix ให้ DOG ({toAddr})"
         elif "ขอโดย Mini" in forward_body:
             print("Mini")
             toAddr = "chananchida2912@gmail.com"
+            message = f"ส่งเมล์จาก Netflix ให้ Mini ({toAddr})"
         elif "ขอโดย Peat" in forward_body:
             print("Peat")
             toAddr = "pansan643@gmail.com"
+            message = f"ส่งเมล์จาก Netflix ให้ Peat ({toAddr})"
         else:
             return print("No recipient found")
         
         if toAddr is None:
             return print("No recipient found")
         
-        sendMail(
+        result = sendMail(
             host=SMTP_HOST,
             port=SMTP_PORT,
             username=MAIL_USERNAME,
@@ -577,6 +584,9 @@ def netflixForwardEmail(folder):
             message_id="",
             fwd=True,
         )
+        if result == "success":
+            result_line = send_line_notify(message, LINE_TOKEN)
+            print(result_line)
 
     client.logout()
 
