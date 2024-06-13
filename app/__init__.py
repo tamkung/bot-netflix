@@ -82,7 +82,7 @@ def createApp():
     # start schedule
     from app.mail.controller import receiveMailAllFolder
     if uwsgi.worker_id()==1:
-        SCHEDULER.add_job(func=receiveMailAllFolder, trigger="interval", id="email_receiver", name="email_receiver", seconds=5, replace_existing=True)
+        SCHEDULER.add_job(func=receiveMailAllFolder, trigger="interval", id="email_receiver", name="email_receiver", seconds=5, replace_existing=True, max_instances=10)
         SCHEDULER.start()
 
     return app
