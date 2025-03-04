@@ -72,6 +72,7 @@ class Config(object):
     S3_REGION_NAME = os.environ.get('S3_REGION_NAME')
     S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
     S3_ENDPOINT_URL = os.environ.get('S3_ENDPOINT_URL')
+    DISCORD_WEBHOOK_URL = os.environ.get('DISCORD_WEBHOOK_URL')
 
     SCHEDULER_EXECUTORS = {
         'default': {'type': 'threadpool', 'max_workers': 1}

@@ -39,7 +39,7 @@ from app.mail.model import  (
     selectTagByID,
     updateEmailCriticalType,
 )
-from app.line.message import send_line_notify
+from app.discord.message import send_discord_webhook
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -49,7 +49,7 @@ MAIL_USERNAME = os.getenv('MAIL_USERNAME')
 MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
 SMTP_HOST = os.getenv('SMTP_HOST')
 SMTP_PORT= os.getenv('SMTP_PORT')
-LINE_TOKEN = os.getenv('LINE_TOKEN')
+DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
 
 class Attachment:
     def __init__(self, part, filename=None, type=None, payload=None, charset=None, content_id=None, description=None, disposition=None, sanitized_filename=None, is_body=None):
@@ -585,8 +585,12 @@ def netflixForwardEmail(folder):
             fwd=True,
         )
         if result == "success":
-            result_line = send_line_notify(message, LINE_TOKEN)
-            print(result_line)
+            try:
+                result_line = send_discord_webhook(message, DISCORD_WEBHOOK_URL)
+                print(result_line)
+            except Exception:
+                print(Exception)
+                pass
 
     client.logout()
 
