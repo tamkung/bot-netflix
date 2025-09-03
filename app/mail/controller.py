@@ -550,12 +550,12 @@ def netflixForwardEmail(folder):
             return print("Is Owner Email")
         elif "ขอโดย Aun" in forward_body:
             print("Aun")
-            toAddr = "worrawut1606@gmail.com"
+            toAddr = "worrawut1606@gmail.com,chananchida2912@gmail.com"
             message = f"ส่งเมล์จาก Netflix ให้ Aun ({toAddr})"
         elif "ขอโดย JJ" in forward_body:
-            print("DOG")
+            print("JJ")
             toAddr = "nuttanan355@gmail.com"
-            message = f"ส่งเมล์จาก Netflix ให้ DOG ({toAddr})"
+            message = f"ส่งเมล์จาก Netflix ให้ JJ ({toAddr})"
         elif "ขอโดย Mini" in forward_body:
             print("Mini")
             toAddr = "chananchida2912@gmail.com"
